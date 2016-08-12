@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IMDB - Ranking</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body>
+
+    <div ng-app="" ng-init="movies=[{title:'Brave Heart', rating:8.7}, {title:'Silicon Valley', rating:4.7}]">
+        <ol>
+            <li ng-repeat="movie in movies">
+                {{movie.title + " " + movie.rating}}
+            </li>
+        </ol>
+
+    </div>
+
+</body>
+</html>
