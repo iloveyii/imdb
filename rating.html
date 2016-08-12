@@ -9,9 +9,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <!-- Latest compiled and minified JavaScript -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        #higher {
+            color: red;
+            font-weight: bold;
+        }
+        #lower {
+            color: green;
+        }
+    </style>
 </head>
 <body>
 <div class="container" ng-app="myApp" ng-controller="moviesCtrl">
+    <div class="row">
+
+        <div class="col-md-12"> <h3>Search on IMDB</h3> <hr /></div>
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -30,12 +43,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4"  ng-repeat="movie in movies">
+        <div class="col-md-4">
             <div class="thumbnail">
                 <img src="{{movie.Poster}}" style="height: 125px; width: 100%;">
                 <div class="caption">
                     <h4>{{movie.Title}}</h4>
-                    <p>{{movie.Year}}</p>
+                    <p>Released: {{movie.Released}}  <span class="pull-right" id="{{myStyle}}">Rating: {{movie.imdbRating}}<span></span></p>
+                    <p>{{movie.Plot}}</p>
                 </div>
             </div>
         </div>
@@ -43,9 +57,15 @@
             var app = angular.module('myApp', []);
             app.controller('moviesCtrl', function($scope, $http) {
                 $scope.title = 'Silicon Valley';
+                $scope.myStyle='rating-low';
                 $scope.searchMovie = function() {
-                    $http.get('http://www.omdbapi.com/?s=' + $scope.title + '&plot=short&r=json&type=series').then(function (response) {
-                        $scope.movies = response.data.Search;
+                    $http.get('http://www.omdbapi.com/?t=' + $scope.title + '&plot=short&r=json').then(function (response) {
+                        $scope.movie = response.data;
+                        if($scope.movie.imdbRating >= 8.5) {
+                            $scope.myStyle='higher';
+                        } else {
+                            $scope.myStyle='lower';
+                        }
                     });
                 }
                 $scope.searchMovie();
